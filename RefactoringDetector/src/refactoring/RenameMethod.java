@@ -5,6 +5,7 @@ import java.util.List;
 
 import cn.edu.sysu.diffextraction.DiffType;
 import cn.edu.sysu.syntaxsimilar.Token;
+import stucture.DiffTypeName;
 import stucture.Method;
 import stucture.RefactChange;
 import stucture.RefactorType;
@@ -27,7 +28,7 @@ public class RenameMethod {
 	
 	public boolean isRenameMethod() {
 		for (DiffType d : diffList) {
-			if (d.getType().equals("METHOD_RENAMING")) {
+			if (d.getType().equals(DiffTypeName.METHOD_RENAMING.toString())) {
 				RefactChange r = new RefactChange();
 				r.setType(RefactorType.RENAMEMETHOD);
 				r.setOldStartLine(d.getOldStartLine());

@@ -22,6 +22,7 @@ import cn.edu.sysu.syntaxsimilar.Tokenizer2;
 import cn.edu.sysu.test.CodeSpliterTool;
 import refactoring.ExtractMethod;
 import refactoring.IntroduceAssertion;
+import refactoring.ReplaceExceptionWithTest;
 import stucture.RefactChange;
 
 public class TestChange {
@@ -38,8 +39,8 @@ public class TestChange {
 
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
-		String oldPath = "file\\IntroduceAssertion\\v1\\IA.java";
-		String newPath = "file\\IntroduceAssertion\\v2\\IA.java";
+		String oldPath = "file\\ReplaceExceptionWithTest\\v1\\REWT.java";
+		String newPath = "file\\ReplaceExceptionWithTest\\v2\\REWT.java";
 
 		// FileDistiller distiller =
 		// ChangeDistiller.createFileDistiller(Language.JAVA);
@@ -80,8 +81,9 @@ public class TestChange {
 			System.out.println(d.getNewStartLine());
 			System.out.println(d.getNewEndLine());
 		}
-		IntroduceAssertion e = new IntroduceAssertion(tokenListOld, tokenListNew, diffList);
+		ReplaceExceptionWithTest e = new ReplaceExceptionWithTest(tokenListOld, tokenListNew, diffList);
 		// e.testMethodCalled();
+		//e.isReplaceExceptionWithTest();
 		List<RefactChange> l = new ArrayList<RefactChange>();
 		l = e.refactor();
 

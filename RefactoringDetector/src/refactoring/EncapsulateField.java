@@ -5,6 +5,8 @@ import java.util.List;
 
 import cn.edu.sysu.diffextraction.DiffType;
 import cn.edu.sysu.syntaxsimilar.Token;
+import cn.edu.sysu.syntaxsimilar.TokenType;
+import stucture.DiffTypeName;
 import stucture.Method;
 import stucture.RefactChange;
 import stucture.RefactorType;
@@ -27,9 +29,9 @@ public class EncapsulateField {
 	
 	public boolean isEncapsulateField() {
 		for (DiffType d : diffList) {
-			if (d.getType().equals("DECREASING_ACCESSIBILITY_CHANGE")) {
+			if (d.getType().equals(DiffTypeName.DECREASING_ACCESSIBILITY_CHANGE.toString())) {
 				for(Token t: tokenListNew) {
-					if(t.getTokenName().equals("FieldDeclaration")) {
+					if(t.getTokenName().equals(TokenType.FieldDeclaration.toString())) {
 						if(t.getStartLine() == d.getNewStartLine()) {
 							RefactChange r = new RefactChange();
 							r.setType(RefactorType.ENCAPSLUATEFIELD);
