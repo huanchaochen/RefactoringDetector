@@ -6,8 +6,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import algorithm.LongestCommonSubsequence;
 import cn.edu.sysu.diffextraction.DiffType;
 import cn.edu.sysu.syntaxsimilar.Token;
+import stucture.Method;
+import stucture.RefactChange;
+import stucture.RefactorType;
 
 public class ExtractMethod {
 	List<Token> tokenListOld;
@@ -30,20 +34,20 @@ public class ExtractMethod {
 		for (Token t : tokenListOld) {
 			if (t.getTokenName().equals("MethodDeclaration")) {
 				Method m = new Method();
-				m.methodName = t.getKeyword();
+				m.setMethodName(t.getKeyword());
 				//System.out.println(m.methodName);
-				m.startLine = t.getStartLine();
-				m.endLine = t.getEndLine();
+				m.setStartLine(t.getStartLine());
+				m.setEndLine(t.getEndLine());
 				oldMethods.add(m);
 			}
 		}
 		for (Token t : tokenListNew) {
 			if (t.getTokenName().equals("MethodDeclaration")) {
 				Method m = new Method();
-				m.methodName = t.getKeyword();
+				m.setMethodName(t.getKeyword());
 				//System.out.println(m.methodName);
-				m.startLine = t.getStartLine();
-				m.endLine = t.getEndLine();
+				m.setStartLine(t.getStartLine());
+				m.setEndLine(t.getEndLine());
 				newMethods.add(m);
 			}
 		}
@@ -55,17 +59,20 @@ public class ExtractMethod {
 			if (d.getType().equals("ADDITIONAL_FUNCTIONALITY")) {
 				Method m = new Method();
 
-				m.startLine = d.getNewStartLine();
-				m.endLine = d.getNewEndLine();
+				//m.startLine = d.getNewStartLine();
+				m.setStartLine(d.getNewStartLine());
+				//m.endLine = d.getNewEndLine();
+				m.setEndLine(d.getNewEndLine());
 				List<Token> l = d.getNewTokenList();
 				for (int i = 0; i < l.size(); i++) {
 					// System.out.println(l.get(i).getTokenName() + ":" + l.get(i).getKeyword());
 					if (l.get(i).getTokenName().equals("MethodDeclaration")) {
 						String s = l.get(i).getKeyword();
-						m.methodName = s.substring(0, s.indexOf("("));
+						m.setMethodName(s.substring(0, s.indexOf("(")));
 					}
-					if (l.get(i).getStartLine() >= m.startLine && l.get(i).getEndLine() <= m.endLine) {
-						m.codeToken.add(l.get(i));
+					if (l.get(i).getStartLine() >= m.getStartLine() && l.get(i).getEndLine() <= m.getEndLine()) {
+						//m.codeToken.add(l.get(i));
+						m.setCodeToken(l.get(i));
 
 					}
 				}
@@ -109,12 +116,12 @@ public class ExtractMethod {
 		// }
 
 		List<Token> temp = new ArrayList<Token>();
-		for (int i = 0; i < m.codeToken.size(); i++) {
+		for (int i = 0; i < m.getCodeToken().size(); i++) {
 			// System.out.println(m.codeToken.get(i).getTokenName() + ":" +
 			// m.codeToken.get(i).getKeyword());
-			if (m.codeToken.get(i).getTokenName().equals("Block")) {
-				for (int j = i + 1; j < m.codeToken.size(); j++) {
-					temp.add(m.codeToken.get(j));// 得到函数体
+			if (m.getCodeToken().get(i).getTokenName().equals("Block")) {
+				for (int j = i + 1; j < m.getCodeToken().size(); j++) {
+					temp.add(m.getCodeToken().get(j));// 得到函数体
 				}
 				break;
 			}
@@ -137,7 +144,7 @@ public class ExtractMethod {
 				
 				boolean flag = false;
 				//System.out.println(m.methodCalledLine.size());
-				Iterator iter = m.methodCalledLine.entrySet().iterator();
+				Iterator iter = m.getMethodCalledLine().entrySet().iterator();
 				while (iter.hasNext()) {
 					//System.out.println("in");
 					List<Token> simpleCode = new ArrayList<Token>();
@@ -145,11 +152,11 @@ public class ExtractMethod {
 					int line = (int) entry.getKey();
 					String name = (String) entry.getValue();
 					for (Method oldMethod : oldMethods) {
-						if (name.equals(oldMethod.methodName)) {
+						if (name.equals(oldMethod.getMethodName())) {
 							for (DiffType d : diffList) {
 								if (d.getType().equals("STATEMENT_DELETE")) {
-									if (d.getOldStartLine() >= oldMethod.startLine
-											&& d.getOldEndLine() <= oldMethod.endLine) {
+									if (d.getOldStartLine() >= oldMethod.getStartLine()
+											&& d.getOldEndLine() <= oldMethod.getEndLine()) {
 										for (Token t : d.getOldTokenList()) {
 											//if (t.getKeyword() != null && !t.getKeyword().equals("")) {// 去除关键字为空的token
 
@@ -220,15 +227,15 @@ public class ExtractMethod {
 							//String s = tokenList.get(i + j).getKeyword();
 						String s = tokenList.get(i).getKeyword();
 							if (s != null) {
-								if (s.equals(m.methodName)) {
+								if (s.equals(m.getMethodName())) {
 									// System.out.println(tokenList.get(i + j).getStartLine());
 //									 System.out.println(m.methodName);
 //									 System.out.println(tokenList.get(i + j).getStartLine());
 									int callLine = tokenList.get(i).getStartLine();
 									for (Method newMethod : newMethods) {
-										if (newMethod.startLine <= callLine && newMethod.endLine >= callLine) {
-											m.methodCalledLine.put(
-													tokenList.get(i).getStartLine(), newMethod.methodName);
+										if (newMethod.getStartLine() <= callLine && newMethod.getEndLine() >= callLine) {
+											m.setMethodCalledLine(
+													tokenList.get(i).getStartLine(), newMethod.getMethodName());
 											//System.out.println(newMethod.methodName);
 											//System.out.println(tokenList.get(i + j).getStartLine());
 										}
@@ -241,7 +248,7 @@ public class ExtractMethod {
 				}
 			}
 		}
-		if (m.methodCalledLine.size() != 0) {
+		if (m.getMethodCalledLine().size() != 0) {
 			return true;
 		}
 		return false;
@@ -260,7 +267,7 @@ public class ExtractMethod {
 		while (iterator.hasNext()) {
 			Method m = iterator.next();
 			//System.out.println(m.methodName + ":");
-			if (m.codeToken.size() == 0) {
+			if (m.getCodeToken().size() == 0) {
 				System.out.println("ERROR!");
 				continue;
 			}
@@ -268,7 +275,7 @@ public class ExtractMethod {
 				iterator.remove();
 		}
 		for (Method m : methods) {
-			System.out.println(m.methodName);
+			System.out.println(m.getMethodName());
 		}
 		if (methods.size() != 0) {
 			return true;
@@ -290,7 +297,7 @@ public class ExtractMethod {
 		while (iterator.hasNext()) {
 			Method m = iterator.next();
 
-			if (m.codeToken.size() == 0) {
+			if (m.getCodeToken().size() == 0) {
 				System.out.println("ERROR!");
 				continue;
 			}

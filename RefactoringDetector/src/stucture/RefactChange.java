@@ -1,4 +1,4 @@
-package refactoring;
+package stucture;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -72,19 +72,19 @@ public class RefactChange {
 			if (refactoringType.equals(RefactorType.EXTRACTMETHOD)) {
 				oldStartLine = getStartLine(s);
 				oldEndLine = getEndLine(s);
-				newStartLine = method.startLine;
-				newEndLine = method.endLine;
+				newStartLine = method.getStartLine();
+				newEndLine = method.getEndLine();
 			}
 			if (refactoringType.equals(RefactorType.INLINEMETHOD)) {
-				oldStartLine = method.startLine;
-				oldEndLine = method.endLine;
+				oldStartLine = method.getStartLine();
+				oldEndLine = method.getEndLine();
 				newStartLine = getStartLine(s);
 				newEndLine = getEndLine(s);
 			}else {
 				oldStartLine = getStartLine(s);
 				oldEndLine = getEndLine(s);
-				newStartLine = method.startLine;
-				newEndLine = method.endLine;
+				newStartLine = method.getStartLine();
+				newEndLine = method.getEndLine();
 			}
 			RefactChange r = new RefactChange();
 			r.setType(refactoringType);

@@ -1,4 +1,4 @@
-package refactoring;
+package algorithm;
 
 import java.util.ArrayList;
 import java.util.Collections;

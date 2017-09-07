@@ -1,4 +1,4 @@
-package refactoring;
+package test;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,6 +20,9 @@ import cn.edu.sysu.syntaxsimilar.Parser2;
 import cn.edu.sysu.syntaxsimilar.Token;
 import cn.edu.sysu.syntaxsimilar.Tokenizer2;
 import cn.edu.sysu.test.CodeSpliterTool;
+import refactoring.ExtractMethod;
+import refactoring.IntroduceAssertion;
+import stucture.RefactChange;
 
 public class TestChange {
 

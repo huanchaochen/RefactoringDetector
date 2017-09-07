@@ -5,6 +5,9 @@ import java.util.List;
 
 import cn.edu.sysu.diffextraction.DiffType;
 import cn.edu.sysu.syntaxsimilar.Token;
+import stucture.Method;
+import stucture.RefactChange;
+import stucture.RefactorType;
 
 public class IntroduceAssertion {
 	List<Token> tokenListOld;
@@ -27,20 +30,20 @@ public class IntroduceAssertion {
 		for (Token t : tokenListOld) {
 			if (t.getTokenName().equals("MethodDeclaration")) {
 				Method m = new Method();
-				m.methodName = t.getKeyword();
-				System.out.println(m.methodName);
-				m.startLine = t.getStartLine();
-				m.endLine = t.getEndLine();
+				m.setMethodName(t.getKeyword());
+				//System.out.println(m.methodName);
+				m.setStartLine(t.getStartLine());
+				m.setEndLine(t.getEndLine());
 				oldMethods.add(m);
 			}
 		}
 		for (Token t : tokenListNew) {
 			if (t.getTokenName().equals("MethodDeclaration")) {
 				Method m = new Method();
-				m.methodName = t.getKeyword();
-				System.out.println(m.methodName);
-				m.startLine = t.getStartLine();
-				m.endLine = t.getEndLine();
+				m.setMethodName(t.getKeyword());
+				//System.out.println(m.methodName);
+				m.setStartLine(t.getStartLine());
+				m.setEndLine(t.getEndLine());
 				newMethods.add(m);
 			}
 		}
@@ -56,18 +59,18 @@ public class IntroduceAssertion {
 							String newMethodName = null;
 							for (Method newMethod : newMethods) {
 
-								if (newMethod.startLine <= t.getStartLine() && newMethod.endLine >= t.getEndLine()) {
-									newMethodName = newMethod.methodName;
+								if (newMethod.getStartLine() <= t.getStartLine() && newMethod.getEndLine() >= t.getEndLine()) {
+									newMethodName = newMethod.getMethodName();
 								}
 
 							}
 							for (Method oldMethod : oldMethods) {
-								if (oldMethod.methodName.equals(newMethodName)) {
+								if (oldMethod.getMethodName().equals(newMethodName)) {
 
 									RefactChange r = new RefactChange();
 									r.setType(RefactorType.INTRODUCEASSERTION);
-									r.setOldStartLine(oldMethod.startLine);
-									r.setOldEndLine(oldMethod.endLine);
+									r.setOldStartLine(oldMethod.getStartLine());
+									r.setOldEndLine(oldMethod.getEndLine());
 									r.setNewStartLine(d.getNewStartLine());
 									r.setNewEndLine(d.getNewEndLine());
 									refactList.add(r);

@@ -1,4 +1,4 @@
-package refactoring;
+package test;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -19,6 +19,8 @@ import cn.edu.sysu.syntaxsimilar.Parser2;
 import cn.edu.sysu.syntaxsimilar.Token;
 import cn.edu.sysu.syntaxsimilar.Tokenizer2;
 import cn.edu.sysu.test.CodeSpliterTool;
+import refactoring.ExtractMethod;
+import stucture.RefactChange;
 
 public class ReadHibernate {
 

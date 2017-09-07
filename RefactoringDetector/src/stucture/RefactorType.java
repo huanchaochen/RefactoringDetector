@@ -1,4 +1,4 @@
-package refactoring;
+package stucture;
 
 public enum RefactorType {
 	
