@@ -5,6 +5,9 @@ import java.util.List;
 
 import cn.edu.sysu.diffextraction.DiffType;
 import cn.edu.sysu.syntaxsimilar.Token;
+import stucture.Method;
+import stucture.RefactChange;
+import stucture.RefactorType;
 
 public class RenameMethod {
 	List<Token> tokenListOld;

@@ -5,6 +5,9 @@ import java.util.List;
 
 import cn.edu.sysu.diffextraction.DiffType;
 import cn.edu.sysu.syntaxsimilar.Token;
+import stucture.Method;
+import stucture.RefactChange;
+import stucture.RefactorType;
 
 public class RemoveParameter {
 	List<Token> tokenListOld;
@@ -17,14 +20,17 @@ public class RemoveParameter {
 		for (DiffType d : diffList) {
 			if (d.getType().equals("PARAMETER_DELETE")) {
 				Method m = new Method();
-				m.startLine = d.getOldStartLine();
-				m.endLine = d.getOldEndLine();//不考虑函数体
+				//m.startLine = d.getOldStartLine();
+				m.setStartLine(d.getOldStartLine());
+				//m.endLine = d.getOldEndLine();//不考虑函数体
+				m.setEndLine(d.getOldEndLine());
 				List<Token> tokenOld = d.getOldTokenList();
 				for (int i = 1; i < tokenOld.size(); i++) {
 					System.out.println(tokenOld.get(i).getTokenName() + ":" + tokenOld.get(i).getKeyword());
 					if (tokenOld.get(i).getTokenName().equals("SingleVariableDeclaration")) {
 							String s = tokenOld.get(i - 1).getKeyword();
-							m.methodName = s;
+							//m.methodName = s;
+							m.setMethodName(s);
 							break;
 						
 					}
@@ -33,11 +39,11 @@ public class RemoveParameter {
 			}
 		}
 
-		for (Method m : methods) {
-			System.out.println(m.methodName);
-			System.out.println(m.startLine);
-			System.out.println(m.endLine);
-		}
+//		for (Method m : methods) {
+//			System.out.println(m.methodName);
+//			System.out.println(m.startLine);
+//			System.out.println(m.endLine);
+//		}
 	}
 
 	public RemoveParameter(List<Token> tokenListOld, List<Token> tokenListNew, List<DiffType> diffList) {
@@ -63,7 +69,7 @@ public class RemoveParameter {
 								for (int j = 1; j <= tokenNew.size() - i - 1; j++) {
 									String s = tokenNew.get(i + j).getKeyword();
 									if (s != null) {
-										if (s.equals(m.methodName)) {
+										if (s.equals(m.getMethodName())) {
 											RefactChange r = new RefactChange();
 											r.setType(RefactorType.REMOVEPARAMETER);
 											r.setOldStartLine(d.getOldStartLine());

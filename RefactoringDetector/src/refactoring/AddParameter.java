@@ -5,6 +5,9 @@ import java.util.List;
 
 import cn.edu.sysu.diffextraction.DiffType;
 import cn.edu.sysu.syntaxsimilar.Token;
+import stucture.Method;
+import stucture.RefactChange;
+import stucture.RefactorType;
 
 public class AddParameter {
 	List<Token> tokenListOld;
@@ -17,14 +20,15 @@ public class AddParameter {
 		for (DiffType d : diffList) {
 			if (d.getType().equals("PARAMETER_INSERT")) {
 				Method m = new Method();
-				m.startLine = d.getNewStartLine();
-				m.endLine = d.getNewEndLine();
+				m.setStartLine(d.getNewStartLine());
+				m.setEndLine(d.getNewEndLine());
 				List<Token> tokenNew = d.getNewTokenList();
 				for (int i = 1; i < tokenNew.size(); i++) {
 					System.out.println(tokenNew.get(i).getTokenName() + ":" + tokenNew.get(i).getKeyword());
 					if (tokenNew.get(i).getTokenName().equals("SingleVariableDeclaration")) {
 							String s = tokenNew.get(i - 1).getKeyword();
-							m.methodName = s;
+							//m.methodName = s;
+							m.setMethodName(s);
 							break;
 						
 					}
@@ -33,11 +37,11 @@ public class AddParameter {
 			}
 		}
 
-		for (Method m : methods) {
-			System.out.println(m.methodName);
-			System.out.println(m.startLine);
-			System.out.println(m.endLine);
-		}
+//		for (Method m : methods) {
+//			System.out.println(m.methodName);
+//			System.out.println(m.startLine);
+//			System.out.println(m.endLine);
+//		}
 	}
 
 	public AddParameter(List<Token> tokenListOld, List<Token> tokenListNew, List<DiffType> diffList) {
@@ -63,7 +67,7 @@ public class AddParameter {
 								for (int j = 1; j < tokenNew.size() - i - 1; j++) {
 									String s = tokenNew.get(i + j).getKeyword();
 									if (s != null) {
-										if (s.equals(m.methodName)) {
+										if (s.equals(m.getMethodName())) {
 											RefactChange r = new RefactChange();
 											r.setType(RefactorType.ADDPARAMETER);
 											r.setOldStartLine(d.getOldStartLine());
