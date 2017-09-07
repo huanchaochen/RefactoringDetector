@@ -8,6 +8,7 @@ import java.util.List;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jface.text.Assert;
 
 import ch.uzh.ifi.seal.changedistiller.ChangeDistiller;
 import ch.uzh.ifi.seal.changedistiller.ChangeDistiller.Language;
@@ -34,8 +35,8 @@ public class TestChange {
 
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
-		String oldPath = "file\\EncapsluateField\\v1\\EF.java";
-		String newPath = "file\\EncapsluateField\\v2\\EF.java";
+		String oldPath = "file\\IntroduceAssertion\\v1\\IA.java";
+		String newPath = "file\\IntroduceAssertion\\v2\\IA.java";
 
 		// FileDistiller distiller =
 		// ChangeDistiller.createFileDistiller(Language.JAVA);
@@ -46,12 +47,16 @@ public class TestChange {
 
 		List<Token> tokenListNew = new ArrayList<Token>();
 		tokenListNew = parse2TokenList(newPath);
-
-		 for(Token t: tokenListOld){
-			 System.out.println(t.getTokenName());
-			 System.out.println(t.getKeyword());
-		 }
-		
+		System.out.println("old:");
+		for (Token t : tokenListOld) {
+			System.out.println(t.getTokenName());
+			System.out.println(t.getKeyword());
+		}
+		System.out.println("new:");
+		for (Token t : tokenListNew) {
+			System.out.println(t.getTokenName());
+			System.out.println(t.getKeyword());
+		}
 
 		try {
 			diffList = ChangeAnalysis.changeDistill(oldPath, newPath, tokenListNew, tokenListOld);
@@ -72,8 +77,8 @@ public class TestChange {
 			System.out.println(d.getNewStartLine());
 			System.out.println(d.getNewEndLine());
 		}
-		EncapsulateField e = new EncapsulateField(tokenListOld, tokenListNew, diffList);
-		//e.testMethodCalled();
+		IntroduceAssertion e = new IntroduceAssertion(tokenListOld, tokenListNew, diffList);
+		// e.testMethodCalled();
 		List<RefactChange> l = new ArrayList<RefactChange>();
 		l = e.refactor();
 
@@ -84,7 +89,7 @@ public class TestChange {
 				System.out.println(r.getOldEndLine());
 				System.out.println(r.getNewStartLine());
 				System.out.println(r.getNewEndLine());
-				if(r.getMethodCalledLine() != null)
+				if (r.getMethodCalledLine() != null)
 					System.out.println(r.getMethodCalledLine());
 
 			}
