@@ -21,6 +21,7 @@ import cn.edu.sysu.syntaxsimilar.Token;
 import cn.edu.sysu.syntaxsimilar.Tokenizer2;
 import cn.edu.sysu.test.CodeSpliterTool;
 import refactoring.ExtractMethod;
+import refactoring.InlineTemp;
 import refactoring.IntroduceAssertion;
 import refactoring.ReplaceExceptionWithTest;
 import stucture.RefactChange;
@@ -39,8 +40,8 @@ public class TestChange {
 
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
-		String oldPath = "file\\ReplaceExceptionWithTest\\v1\\REWT.java";
-		String newPath = "file\\ReplaceExceptionWithTest\\v2\\REWT.java";
+		String oldPath = "file\\InlineTemp\\v1\\IT.java";
+		String newPath = "file\\InlineTemp\\v2\\IT.java";
 
 		// FileDistiller distiller =
 		// ChangeDistiller.createFileDistiller(Language.JAVA);
@@ -81,10 +82,13 @@ public class TestChange {
 			System.out.println(d.getNewStartLine());
 			System.out.println(d.getNewEndLine());
 		}
-		ReplaceExceptionWithTest e = new ReplaceExceptionWithTest(tokenListOld, tokenListNew, diffList);
+		InlineTemp e = new InlineTemp(tokenListOld, tokenListNew, diffList);
 		// e.testMethodCalled();
 		//e.isReplaceExceptionWithTest();
 		List<RefactChange> l = new ArrayList<RefactChange>();
+		//e.deleteVariable();
+		//e.deleteAssignment();
+		//e.updateStatement();
 		l = e.refactor();
 
 		if (l != null) {

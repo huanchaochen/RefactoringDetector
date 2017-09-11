@@ -42,6 +42,7 @@ public class RenameMethod {
 		if(refactList != null) {
 			return true;
 		}
+	
 		return false;
 	}	
 
