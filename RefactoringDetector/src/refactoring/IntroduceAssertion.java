@@ -5,6 +5,8 @@ import java.util.List;
 
 import cn.edu.sysu.diffextraction.DiffType;
 import cn.edu.sysu.syntaxsimilar.Token;
+import cn.edu.sysu.syntaxsimilar.TokenType;
+import stucture.DiffTypeName;
 import stucture.Method;
 import stucture.RefactChange;
 import stucture.RefactorType;
@@ -28,7 +30,7 @@ public class IntroduceAssertion {
 		this.oldMethods = new ArrayList<Method>();
 		this.newMethods = new ArrayList<Method>();
 		for (Token t : tokenListOld) {
-			if (t.getTokenName().equals("MethodDeclaration")) {
+			if (t.getTokenName().equals(TokenType.MethodDeclaration.toString())) {
 				Method m = new Method();
 				m.setMethodName(t.getKeyword());
 				//System.out.println(m.methodName);
@@ -38,7 +40,7 @@ public class IntroduceAssertion {
 			}
 		}
 		for (Token t : tokenListNew) {
-			if (t.getTokenName().equals("MethodDeclaration")) {
+			if (t.getTokenName().equals(TokenType.MethodDeclaration.toString())) {
 				Method m = new Method();
 				m.setMethodName(t.getKeyword());
 				//System.out.println(m.methodName);
@@ -51,9 +53,9 @@ public class IntroduceAssertion {
 
 	public boolean isIntroduceAssertion() {
 		for (DiffType d : diffList) {
-			if (d.getType().equals("STATEMENT_INSERT")) {
+			if (d.getType().equals(DiffTypeName.STATEMENT_INSERT.toString())) {
 				for (Token t : d.getNewTokenList()) {
-					if (t.getTokenName().equals("SimpleName")) {
+					if (t.getTokenName().equals(TokenType.SimpleName.toString())) {
 						if (t.getKeyword().equals("Assert")) {
 							// System.out.println("-------------------------");
 							String newMethodName = null;

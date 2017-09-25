@@ -5,6 +5,8 @@ import java.util.List;
 
 import cn.edu.sysu.diffextraction.DiffType;
 import cn.edu.sysu.syntaxsimilar.Token;
+import cn.edu.sysu.syntaxsimilar.TokenType;
+import stucture.DiffTypeName;
 import stucture.Method;
 import stucture.RefactChange;
 import stucture.RefactorType;
@@ -18,14 +20,14 @@ public class AddParameter {
  
 	public void getAddParameterMethod() {
 		for (DiffType d : diffList) {
-			if (d.getType().equals("PARAMETER_INSERT")) {
+			if (d.getType().equals(DiffTypeName.PARAMETER_INSERT.toString())) {
 				Method m = new Method();
 				m.setStartLine(d.getNewStartLine());
 				m.setEndLine(d.getNewEndLine());
 				List<Token> tokenNew = d.getNewTokenList();
 				for (int i = 1; i < tokenNew.size(); i++) {
 					System.out.println(tokenNew.get(i).getTokenName() + ":" + tokenNew.get(i).getKeyword());
-					if (tokenNew.get(i).getTokenName().equals("SingleVariableDeclaration")) {
+					if (tokenNew.get(i).getTokenName().equals(TokenType.SingleVariableDeclaration.toString())) {
 							String s = tokenNew.get(i - 1).getKeyword();
 							//m.methodName = s;
 							m.setMethodName(s);
@@ -59,10 +61,10 @@ public class AddParameter {
 			// TODO:find old method using method name
 			for (Method m : methods) {
 				for (DiffType d : diffList) {
-					if (d.getType().equals("STATEMENT_UPDATE")) {
+					if (d.getType().equals(DiffTypeName.STATEMENT_UPDATE.toString())) {
 						List<Token> tokenNew = d.getNewTokenList();
 						for (int i = 0; i <= tokenNew.size() - 1; i++) {
-							if (tokenNew.get(i).getTokenName().equals("MethodInvocation")) {
+							if (tokenNew.get(i).getTokenName().equals(TokenType.MethodInvocation.toString())) {
 								
 								for (int j = 1; j < tokenNew.size() - i - 1; j++) {
 									String s = tokenNew.get(i + j).getKeyword();

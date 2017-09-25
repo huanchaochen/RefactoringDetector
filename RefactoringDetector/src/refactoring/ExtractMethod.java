@@ -9,6 +9,8 @@ import java.util.Set;
 import algorithm.LongestCommonSubsequence;
 import cn.edu.sysu.diffextraction.DiffType;
 import cn.edu.sysu.syntaxsimilar.Token;
+import cn.edu.sysu.syntaxsimilar.TokenType;
+import stucture.DiffTypeName;
 import stucture.Method;
 import stucture.RefactChange;
 import stucture.RefactorType;
@@ -32,7 +34,7 @@ public class ExtractMethod {
 		this.oldMethods = new ArrayList<Method>();
 		this.newMethods = new ArrayList<Method>();
 		for (Token t : tokenListOld) {
-			if (t.getTokenName().equals("MethodDeclaration")) {
+			if (t.getTokenName().equals(TokenType.MethodDeclaration.toString())) {
 				Method m = new Method();
 				m.setMethodName(t.getKeyword());
 				//System.out.println(m.methodName);
@@ -42,7 +44,7 @@ public class ExtractMethod {
 			}
 		}
 		for (Token t : tokenListNew) {
-			if (t.getTokenName().equals("MethodDeclaration")) {
+			if (t.getTokenName().equals(TokenType.MethodDeclaration.toString())) {
 				Method m = new Method();
 				m.setMethodName(t.getKeyword());
 				//System.out.println(m.methodName);
@@ -56,7 +58,7 @@ public class ExtractMethod {
 	// 提取增加的函数
 	public void addedMethod() {
 		for (DiffType d : diffList) {
-			if (d.getType().equals("ADDITIONAL_FUNCTIONALITY")) {
+			if (d.getType().equals(DiffTypeName.ADDITIONAL_FUNCTIONALITY.toString())) {
 				Method m = new Method();
 
 				//m.startLine = d.getNewStartLine();
@@ -66,7 +68,7 @@ public class ExtractMethod {
 				List<Token> l = d.getNewTokenList();
 				for (int i = 0; i < l.size(); i++) {
 					// System.out.println(l.get(i).getTokenName() + ":" + l.get(i).getKeyword());
-					if (l.get(i).getTokenName().equals("MethodDeclaration")) {
+					if (l.get(i).getTokenName().equals(TokenType.MethodDeclaration.toString())) {
 						String s = l.get(i).getKeyword();
 						m.setMethodName(s.substring(0, s.indexOf("(")));
 					}
@@ -119,7 +121,7 @@ public class ExtractMethod {
 		for (int i = 0; i < m.getCodeToken().size(); i++) {
 			// System.out.println(m.codeToken.get(i).getTokenName() + ":" +
 			// m.codeToken.get(i).getKeyword());
-			if (m.getCodeToken().get(i).getTokenName().equals("Block")) {
+			if (m.getCodeToken().get(i).getTokenName().equals(TokenType.Block.toString())) {
 				for (int j = i + 1; j < m.getCodeToken().size(); j++) {
 					temp.add(m.getCodeToken().get(j));// 得到函数体
 				}
@@ -154,7 +156,7 @@ public class ExtractMethod {
 					for (Method oldMethod : oldMethods) {
 						if (name.equals(oldMethod.getMethodName())) {
 							for (DiffType d : diffList) {
-								if (d.getType().equals("STATEMENT_DELETE")) {
+								if (d.getType().equals(DiffTypeName.STATEMENT_DELETE.toString())) {
 									if (d.getOldStartLine() >= oldMethod.getStartLine()
 											&& d.getOldEndLine() <= oldMethod.getEndLine()) {
 										for (Token t : d.getOldTokenList()) {
@@ -219,10 +221,10 @@ public class ExtractMethod {
 	public boolean methodCall(Method m) {
 
 		for (DiffType d : diffList) {
-			if (d.getType().equals("STATEMENT_INSERT") | d.getType().equals("STATEMENT_UPDATE")) {
+			if (d.getType().equals(DiffTypeName.STATEMENT_INSERT.toString()) | d.getType().equals(DiffTypeName.STATEMENT_UPDATE.toString())) {
 				List<Token> tokenList = d.getNewTokenList();
 				for (int i = 0; i < tokenList.size(); i++) {
-					if (tokenList.get(i).getTokenName().equals("MethodInvocation")) {
+					if (tokenList.get(i).getTokenName().equals(TokenType.MethodInvocation.toString())) {
 						//for (int j = 1; j <= tokenList.size() - i - 1; j++) {
 							//String s = tokenList.get(i + j).getKeyword();
 						String s = tokenList.get(i).getKeyword();

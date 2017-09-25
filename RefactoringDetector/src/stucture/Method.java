@@ -31,6 +31,11 @@ public class Method {
 	public void setCodeToken(Token codeToken) {
 		this.codeToken.add(codeToken);
 	}
+	
+	public void setCodeTokenList(List<Token> codeTokenList) {
+		this.codeToken = codeTokenList;
+	}
+	
 	public int getStartLine() {
 		return startLine;
 	}

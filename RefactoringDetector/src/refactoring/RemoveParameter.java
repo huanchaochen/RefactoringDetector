@@ -5,6 +5,8 @@ import java.util.List;
 
 import cn.edu.sysu.diffextraction.DiffType;
 import cn.edu.sysu.syntaxsimilar.Token;
+import cn.edu.sysu.syntaxsimilar.TokenType;
+import stucture.DiffTypeName;
 import stucture.Method;
 import stucture.RefactChange;
 import stucture.RefactorType;
@@ -18,7 +20,7 @@ public class RemoveParameter {
 
 	public void getRemoveParameterMethod() {
 		for (DiffType d : diffList) {
-			if (d.getType().equals("PARAMETER_DELETE")) {
+			if (d.getType().equals(DiffTypeName.PARAMETER_DELETE.toString())) {
 				Method m = new Method();
 				//m.startLine = d.getOldStartLine();
 				m.setStartLine(d.getOldStartLine());
@@ -27,7 +29,7 @@ public class RemoveParameter {
 				List<Token> tokenOld = d.getOldTokenList();
 				for (int i = 1; i < tokenOld.size(); i++) {
 					System.out.println(tokenOld.get(i).getTokenName() + ":" + tokenOld.get(i).getKeyword());
-					if (tokenOld.get(i).getTokenName().equals("SingleVariableDeclaration")) {
+					if (tokenOld.get(i).getTokenName().equals(TokenType.SingleVariableDeclaration.toString())) {
 							String s = tokenOld.get(i - 1).getKeyword();
 							//m.methodName = s;
 							m.setMethodName(s);
@@ -61,10 +63,10 @@ public class RemoveParameter {
 			// TODO:find old method using method name
 			for (Method m : methods) {
 				for (DiffType d : diffList) {
-					if (d.getType().equals("STATEMENT_UPDATE")) {
+					if (d.getType().equals(DiffTypeName.STATEMENT_UPDATE.toString())) {
 						List<Token> tokenNew = d.getNewTokenList();
 						for (int i = 0; i < tokenNew.size() - 1; i++) {
-							if (tokenNew.get(i).getTokenName().equals("MethodInvocation")) {
+							if (tokenNew.get(i).getTokenName().equals(TokenType.MethodInvocation.toString())) {
 								
 								for (int j = 1; j <= tokenNew.size() - i - 1; j++) {
 									String s = tokenNew.get(i + j).getKeyword();
